@@ -18,6 +18,7 @@
 #import <Foundation/Foundation.h>
 #import <AsyncDisplayKit/ASBaseDefines.h>
 #import <AsyncDisplayKit/ASElementMap.h>
+#import <AsyncDisplayKit/ASIntegerTable.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -47,11 +48,17 @@ AS_SUBCLASSING_RESTRICTED
 
 - (void)removeSectionsOfItems:(NSIndexSet *)itemSections;
 
-- (void)removeSupplementaryElementsInSections:(NSIndexSet *)sections;
-
 - (void)insertEmptySectionsOfItemsAtIndexes:(NSIndexSet *)sections;
 
 - (void)insertElement:(ASCollectionElement *)element atIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ * Update the index paths for all supplementary elements to account for section-level
+ * deletes, moves, inserts. This must be called before adding new supplementary elements.
+ *
+ * This also deletes any supplementary elements in deleted sections.
+ */
+- (void)migrateSupplementaryElementsWithSectionMapping:(ASIntegerTable *)mapping;
 
 @end
 

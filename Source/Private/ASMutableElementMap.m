@@ -79,13 +79,6 @@ typedef NSMutableDictionary<NSString *, NSMutableDictionary<NSIndexPath *, ASCol
   [_sectionsOfItems removeObjectsAtIndexes:itemSections];
 }
 
-- (void)removeSupplementaryElementsInSections:(NSIndexSet *)sections
-{
-  [_supplementaryElements enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSMutableDictionary<NSIndexPath *,ASCollectionElement *> * _Nonnull supplementariesForKind, BOOL * _Nonnull stop) {
-    [supplementariesForKind removeObjectsForKeys:[sections as_filterIndexPathsBySection:supplementariesForKind]];
-  }];
-}
-
 - (void)insertEmptySectionsOfItemsAtIndexes:(NSIndexSet *)sections
 {
   [sections enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
@@ -106,6 +99,35 @@ typedef NSMutableDictionary<NSString *, NSMutableDictionary<NSIndexPath *, ASCol
     }
     supplementariesForKind[indexPath] = element;
   }
+}
+
+- (void)migrateSupplementaryElementsWithSectionMapping:(ASIntegerTable *)mapping
+{
+  // Fast-path, no section changes.
+  if (mapping == ASIntegerTable.identityTable) {
+    return;
+  }
+
+  // For each element kind,
+  [_supplementaryElements enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSMutableDictionary<NSIndexPath *,ASCollectionElement *> * _Nonnull supps, BOOL * _Nonnull stop) {
+    
+    // For each index path of that kind,
+    [[supps copy] enumerateKeysAndObjectsUsingBlock:^(NSIndexPath * _Nonnull oldIndexPath, ASCollectionElement * _Nonnull obj, BOOL * _Nonnull stop) {
+      NSInteger oldSection = oldIndexPath.section;
+      NSInteger newSection = [mapping integerForKey:oldSection];
+
+      if (oldSection == newSection) {
+        // Index path stayed the same, do nothing.
+      } else if (newSection == NSNotFound) {
+        // Section was deleted, remove the supplementary element.
+        [supps removeObjectForKey:oldIndexPath];
+      } else {
+        // Section index changed, move it.
+        NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:oldIndexPath.item inSection:newSection];
+        supps[newIndexPath] = obj;
+      }
+    }];
+  }];
 }
 
 #pragma mark - Helpers
