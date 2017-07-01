@@ -18,7 +18,7 @@
 #import <Foundation/Foundation.h>
 #import <vector>
 #import <AsyncDisplayKit/ASObjectDescriptionHelpers.h>
-#import <AsyncDisplayKit/ASIntegerTable.h>
+#import <AsyncDisplayKit/ASIntegerMap.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -151,24 +151,24 @@ NSString *NSStringFromASHierarchyChangeType(_ASHierarchyChangeType changeType);
 /**
  * A table that maps old section indexes to new section indexes.
  */
-@property (nonatomic, readonly, strong) ASIntegerTable *sectionMapping;
+@property (nonatomic, readonly, strong) ASIntegerMap *sectionMapping;
 
 /**
  * A table that maps new section indexes to old section indexes.
  */
-@property (nonatomic, readonly, strong) ASIntegerTable *reverseSectionMapping;
+@property (nonatomic, readonly, strong) ASIntegerMap *reverseSectionMapping;
 
 /**
  * A table that provides the item mapping for the old section. If the section was deleted
  * or is out of bounds, returns the empty table.
  */
-- (ASIntegerTable *)itemMappingInSection:(NSInteger)oldSection;
+- (ASIntegerMap *)itemMappingInSection:(NSInteger)oldSection;
 
 /**
  * A table that provides the reverse item mapping for the new section. If the section was inserted
  * or is out of bounds, returns the empty table.
  */
-- (ASIntegerTable *)reverseItemMappingInSection:(NSInteger)newSection;
+- (ASIntegerMap *)reverseItemMappingInSection:(NSInteger)newSection;
 
 /**
  * Get the old item index path for the given new index path.

@@ -1,5 +1,5 @@
 //
-//  ASIntegerTable.m
+//  ASIntegerMap.m
 //  Texture
 //
 //  Copyright (c) 2017-present, Pinterest, Inc.  All rights reserved.
@@ -10,7 +10,7 @@
 //      http://www.apache.org/licenses/LICENSE-2.0
 //
 
-#import "ASIntegerTable.h"
+#import "ASIntegerMap.h"
 #import <unordered_map>
 #import <NSIndexSet+ASHelpers.h>
 #import <AsyncDisplayKit/ASObjectDescriptionHelpers.h>
@@ -18,10 +18,10 @@
 /**
  * This is just a friendly Objective-C interface to unordered_map<NSInteger, NSInteger>
  */
-@interface ASIntegerTable () <ASDescriptionProvider>
+@interface ASIntegerMap () <ASDescriptionProvider>
 @end
 
-@implementation ASIntegerTable {
+@implementation ASIntegerMap {
   std::unordered_map<NSInteger, NSInteger> _map;
   BOOL _isIdentity;
   BOOL _isEmpty;
@@ -29,39 +29,39 @@
 
 #pragma mark - Singleton
 
-+ (ASIntegerTable *)identityTable
++ (ASIntegerMap *)identityMap
 {
-  static ASIntegerTable *identityTable;
+  static ASIntegerMap *identityMap;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    identityTable = [[ASIntegerTable alloc] init];
-    identityTable->_isIdentity = YES;
+    identityMap = [[ASIntegerMap alloc] init];
+    identityMap->_isIdentity = YES;
   });
-  return identityTable;
+  return identityMap;
 }
 
-+ (ASIntegerTable *)emptyTable
++ (ASIntegerMap *)emptyMap
 {
-  static ASIntegerTable *emptyTable;
+  static ASIntegerMap *emptyMap;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    emptyTable = [[ASIntegerTable alloc] init];
-    emptyTable->_isEmpty = YES;
+    emptyMap = [[ASIntegerMap alloc] init];
+    emptyMap->_isEmpty = YES;
   });
-  return emptyTable;
+  return emptyMap;
 }
 
-+ (ASIntegerTable *)tableWithMappingForOldCount:(NSInteger)oldCount deleted:(NSIndexSet *)deletions inserted:(NSIndexSet *)insertions
++ (ASIntegerMap *)mapForUpdateWithOldCount:(NSInteger)oldCount deleted:(NSIndexSet *)deletions inserted:(NSIndexSet *)insertions
 {
   if (oldCount == 0) {
-    return ASIntegerTable.emptyTable;
+    return ASIntegerMap.emptyMap;
   }
 
   if (deletions.count == 0 && insertions.count == 0) {
-    return ASIntegerTable.identityTable;
+    return ASIntegerMap.identityMap;
   }
 
-  ASIntegerTable *result = [[ASIntegerTable alloc] init];
+  ASIntegerMap *result = [[ASIntegerMap alloc] init];
   // Start with the old indexes
   NSMutableIndexSet *indexes = [NSMutableIndexSet indexSetWithIndexesInRange:NSMakeRange(0, oldCount)];
 
@@ -102,13 +102,13 @@
   return result != _map.end() ? result->second : NSNotFound;
 }
 
-- (ASIntegerTable *)reverseTable
+- (ASIntegerMap *)inverseMap
 {
   if (_isIdentity || _isEmpty) {
     return self;
   }
 
-  auto result = [[ASIntegerTable alloc] init];
+  auto result = [[ASIntegerMap alloc] init];
   for (auto it = _map.begin(); it != _map.end(); it++) {
     result->_map[it->second] = it->first;
   }

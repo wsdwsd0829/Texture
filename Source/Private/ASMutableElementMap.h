@@ -18,7 +18,7 @@
 #import <Foundation/Foundation.h>
 #import <AsyncDisplayKit/ASBaseDefines.h>
 #import <AsyncDisplayKit/ASElementMap.h>
-#import <AsyncDisplayKit/ASIntegerTable.h>
+#import <AsyncDisplayKit/ASIntegerMap.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -58,7 +58,7 @@ AS_SUBCLASSING_RESTRICTED
  *
  * This also deletes any supplementary elements in deleted sections.
  */
-- (void)migrateSupplementaryElementsWithSectionMapping:(ASIntegerTable *)mapping;
+- (void)migrateSupplementaryElementsWithSectionMapping:(ASIntegerMap *)mapping;
 
 @end
 

@@ -341,8 +341,8 @@
 		CC55A70E1E529FA200594372 /* UIResponder+AsyncDisplayKit.m in Sources */ = {isa = PBXBuildFile; fileRef = CC55A70C1E529FA200594372 /* UIResponder+AsyncDisplayKit.m */; };
 		CC55A7111E52A0F200594372 /* ASResponderChainEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = CC55A70F1E52A0F200594372 /* ASResponderChainEnumerator.h */; };
 		CC55A7121E52A0F200594372 /* ASResponderChainEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = CC55A7101E52A0F200594372 /* ASResponderChainEnumerator.m */; };
-		CC56013B1F06E9A700DC4FBE /* ASIntegerTable.h in Headers */ = {isa = PBXBuildFile; fileRef = CC5601391F06E9A700DC4FBE /* ASIntegerTable.h */; };
-		CC56013C1F06E9A700DC4FBE /* ASIntegerTable.mm in Sources */ = {isa = PBXBuildFile; fileRef = CC56013A1F06E9A700DC4FBE /* ASIntegerTable.mm */; };
+		CC56013B1F06E9A700DC4FBE /* ASIntegerMap.h in Headers */ = {isa = PBXBuildFile; fileRef = CC5601391F06E9A700DC4FBE /* ASIntegerMap.h */; };
+		CC56013C1F06E9A700DC4FBE /* ASIntegerMap.mm in Sources */ = {isa = PBXBuildFile; fileRef = CC56013A1F06E9A700DC4FBE /* ASIntegerMap.mm */; };
 		CC57EAF71E3939350034C595 /* ASCollectionView+Undeprecated.h in Headers */ = {isa = PBXBuildFile; fileRef = CC2E317F1DAC353700EEE891 /* ASCollectionView+Undeprecated.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		CC57EAF81E3939450034C595 /* ASTableView+Undeprecated.h in Headers */ = {isa = PBXBuildFile; fileRef = CC512B841DAC45C60054848E /* ASTableView+Undeprecated.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		CC583AD61EF9BDBE00134156 /* ASTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = CC583AC21EF9BAB400134156 /* ASTestCase.m */; };
@@ -805,8 +805,8 @@
 		CC55A70C1E529FA200594372 /* UIResponder+AsyncDisplayKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIResponder+AsyncDisplayKit.m"; sourceTree = "<group>"; };
 		CC55A70F1E52A0F200594372 /* ASResponderChainEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASResponderChainEnumerator.h; sourceTree = "<group>"; };
 		CC55A7101E52A0F200594372 /* ASResponderChainEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASResponderChainEnumerator.m; sourceTree = "<group>"; };
-		CC5601391F06E9A700DC4FBE /* ASIntegerTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIntegerTable.h; sourceTree = "<group>"; };
-		CC56013A1F06E9A700DC4FBE /* ASIntegerTable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ASIntegerTable.mm; sourceTree = "<group>"; };
+		CC5601391F06E9A700DC4FBE /* ASIntegerMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIntegerMap.h; sourceTree = "<group>"; };
+		CC56013A1F06E9A700DC4FBE /* ASIntegerMap.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ASIntegerMap.mm; sourceTree = "<group>"; };
 		CC57EAF91E394EA40034C595 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CC583AC01EF9BAB400134156 /* ASDisplayNode+OCMock.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ASDisplayNode+OCMock.m"; sourceTree = "<group>"; };
 		CC583AC11EF9BAB400134156 /* ASTestCase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ASTestCase.h; sourceTree = "<group>"; };
@@ -1208,8 +1208,8 @@
 		058D09E1195D050800B7D73C /* Details */ = {
 			isa = PBXGroup;
 			children = (
-				CC5601391F06E9A700DC4FBE /* ASIntegerTable.h */,
-				CC56013A1F06E9A700DC4FBE /* ASIntegerTable.mm */,
+				CC5601391F06E9A700DC4FBE /* ASIntegerMap.h */,
+				CC56013A1F06E9A700DC4FBE /* ASIntegerMap.mm */,
 				CC0F885E1E4280B800576FED /* _ASCollectionViewCell.h */,
 				CC0F885D1E4280B800576FED /* _ASCollectionViewCell.m */,
 				3917EBD21E9C2FC400D04A01 /* _ASCollectionReusableView.h */,
@@ -1713,7 +1713,7 @@
 				509E68631B3AEDB4009B9150 /* ASCollectionViewLayoutController.h in Headers */,
 				B35061F71B010EFD0018CF92 /* ASCollectionViewProtocols.h in Headers */,
 				68FC85E31CE29B7E00EDD713 /* ASTabBarController.h in Headers */,
-				CC56013B1F06E9A700DC4FBE /* ASIntegerTable.h in Headers */,
+				CC56013B1F06E9A700DC4FBE /* ASIntegerMap.h in Headers */,
 				B35061FA1B010EFD0018CF92 /* ASControlNode+Subclasses.h in Headers */,
 				E54E81FC1EB357BD00FFE8E1 /* ASPageTable.h in Headers */,
 				B35061F81B010EFD0018CF92 /* ASControlNode.h in Headers */,
@@ -2278,7 +2278,7 @@
 				254C6B831BF94F8A003EC431 /* ASTextKitCoreTextAdditions.m in Sources */,
 				CCCCCCE21EC3EF060087FE10 /* ASTextUtilities.m in Sources */,
 				CC55A70E1E529FA200594372 /* UIResponder+AsyncDisplayKit.m in Sources */,
-				CC56013C1F06E9A700DC4FBE /* ASIntegerTable.mm in Sources */,
+				CC56013C1F06E9A700DC4FBE /* ASIntegerMap.mm in Sources */,
 				697796611D8AC8D3007E93D7 /* ASLayoutSpec+Subclasses.mm in Sources */,
 				B350623B1B010EFD0018CF92 /* NSMutableAttributedString+TextKitAdditions.m in Sources */,
 				CCA282CD1E9EB73E0037E8B7 /* ASTipNode.m in Sources */,

@@ -101,10 +101,10 @@ typedef NSMutableDictionary<NSString *, NSMutableDictionary<NSIndexPath *, ASCol
   }
 }
 
-- (void)migrateSupplementaryElementsWithSectionMapping:(ASIntegerTable *)mapping
+- (void)migrateSupplementaryElementsWithSectionMapping:(ASIntegerMap *)mapping
 {
   // Fast-path, no section changes.
-  if (mapping == ASIntegerTable.identityTable) {
+  if (mapping == ASIntegerMap.identityMap) {
     return;
   }
 

@@ -102,10 +102,10 @@ NSString *NSStringFromASHierarchyChangeType(_ASHierarchyChangeType changeType)
 @interface _ASHierarchyChangeSet ()
 
 // array index is old section index, map goes oldItem -> newItem
-@property (nonatomic, strong, readonly) NSMutableArray<ASIntegerTable *> *itemMappings;
+@property (nonatomic, strong, readonly) NSMutableArray<ASIntegerMap *> *itemMappings;
 
 // array index is new section index, map goes newItem -> oldItem
-@property (nonatomic, strong, readonly) NSMutableArray<ASIntegerTable *> *reverseItemMappings;
+@property (nonatomic, strong, readonly) NSMutableArray<ASIntegerMap *> *reverseItemMappings;
 
 @property (nonatomic, strong, readonly) NSMutableArray<_ASHierarchyItemChange *> *insertItemChanges;
 @property (nonatomic, strong, readonly) NSMutableArray<_ASHierarchyItemChange *> *originalInsertItemChanges;
@@ -262,21 +262,21 @@ NSString *NSStringFromASHierarchyChangeType(_ASHierarchyChangeType changeType)
   return [self.reverseSectionMapping integerForKey:newSection];
 }
 
-- (ASIntegerTable *)sectionMapping
+- (ASIntegerMap *)sectionMapping
 {
   ASDisplayNodeAssertNotNil(_deletedSections, @"Cannot call %s before `markCompleted` returns.", sel_getName(_cmd));
   ASDisplayNodeAssertNotNil(_insertedSections, @"Cannot call %s before `markCompleted` returns.", sel_getName(_cmd));
   [self _ensureCompleted];
   if (_sectionMapping == nil) {
-    _sectionMapping = [ASIntegerTable tableWithMappingForOldCount:_oldItemCounts.size() deleted:_deletedSections inserted:_insertedSections];
+    _sectionMapping = [ASIntegerMap mapForUpdateWithOldCount:_oldItemCounts.size() deleted:_deletedSections inserted:_insertedSections];
   }
   return _sectionMapping;
 }
 
-- (ASIntegerTable *)reverseSectionMapping
+- (ASIntegerMap *)reverseSectionMapping
 {
   if (_reverseSectionMapping == nil) {
-    _reverseSectionMapping = [self.sectionMapping reverseTable];
+    _reverseSectionMapping = [self.sectionMapping inverseMap];
   }
   return _reverseSectionMapping;
 }
@@ -292,11 +292,11 @@ NSString *NSStringFromASHierarchyChangeType(_ASHierarchyChangeType changeType)
     NSInteger oldSection = 0;
     for (auto oldCount : _oldItemCounts) {
       NSInteger newSection = [self newSectionForOldSection:oldSection];
-      ASIntegerTable *table;
+      ASIntegerMap *table;
       if (newSection == NSNotFound) {
-        table = ASIntegerTable.emptyTable;
+        table = ASIntegerMap.emptyMap;
       } else {
-        table = [ASIntegerTable tableWithMappingForOldCount:oldCount deleted:deleteMap[@(oldSection)] inserted:insertMap[@(newSection)]];
+        table = [ASIntegerMap mapForUpdateWithOldCount:oldCount deleted:deleteMap[@(oldSection)] inserted:insertMap[@(newSection)]];
       }
       _itemMappings[oldSection] = table;
       oldSection++;
@@ -313,11 +313,11 @@ NSString *NSStringFromASHierarchyChangeType(_ASHierarchyChangeType changeType)
     _reverseItemMappings = [NSMutableArray array];
     for (NSInteger newSection = 0; newSection < _newItemCounts.size(); newSection++) {
       NSInteger oldSection = [self oldSectionForNewSection:newSection];
-      ASIntegerTable *table;
+      ASIntegerMap *table;
       if (oldSection == NSNotFound) {
-        table = ASIntegerTable.emptyTable;
+        table = ASIntegerMap.emptyMap;
       } else {
-        table = [[self itemMappingInSection:oldSection] reverseTable];
+        table = [[self itemMappingInSection:oldSection] inverseMap];
       }
       _reverseItemMappings[newSection] = table;
     }
@@ -325,18 +325,18 @@ NSString *NSStringFromASHierarchyChangeType(_ASHierarchyChangeType changeType)
   return _reverseItemMappings;
 }
 
-- (ASIntegerTable *)itemMappingInSection:(NSInteger)oldSection
+- (ASIntegerMap *)itemMappingInSection:(NSInteger)oldSection
 {
   if (self.includesReloadData || oldSection >= _oldItemCounts.size()) {
-    return ASIntegerTable.emptyTable;
+    return ASIntegerMap.emptyMap;
   }
   return self.itemMappings[oldSection];
 }
 
-- (ASIntegerTable *)reverseItemMappingInSection:(NSInteger)newSection
+- (ASIntegerMap *)reverseItemMappingInSection:(NSInteger)newSection
 {
   if (self.includesReloadData || newSection >= _newItemCounts.size()) {
-    return ASIntegerTable.emptyTable;
+    return ASIntegerMap.emptyMap;
   }
   return self.reverseItemMappings[newSection];
 }
