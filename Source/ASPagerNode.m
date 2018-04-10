@@ -221,9 +221,9 @@
   [self setDelegate:nil];
 }
 
-- (void)didEnterVisibleState
+- (void)didEnterHierarchy
 {
-	[super didEnterVisibleState];
+	[super didEnterHierarchy];
 
 	// Check that our view controller does not automatically set our content insets
 	// It would be better to have a -didEnterHierarchy hook to put this in, but

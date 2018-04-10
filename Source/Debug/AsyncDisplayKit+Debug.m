@@ -389,6 +389,8 @@ static BOOL __shouldShowRangeDebugOverlay = NO;
   
   if (totalHeight > 0) {
     totalHeight -= (BAR_THICKNESS * barsToClip);
+  } else if (totalHeight == 0) {
+
   }
   
   if (barsToClip == 0) {
@@ -453,6 +455,7 @@ static BOOL __shouldShowRangeDebugOverlay = NO;
   _ASRangeDebugBarView *viewToUpdate = [self barViewForRangeController:controller];
   
   CGRect boundsRect = self.bounds;
+
   CGRect visibleRect   = CGRectExpandToRangeWithScrollableDirections(boundsRect, ASRangeTuningParametersZero, scrollableDirections, scrollDirection);
   CGRect displayRect   = CGRectExpandToRangeWithScrollableDirections(boundsRect, displayTuningParameters,     scrollableDirections, scrollDirection);
   CGRect preloadRect   = CGRectExpandToRangeWithScrollableDirections(boundsRect, preloadTuningParameters,   scrollableDirections, scrollDirection);
@@ -473,7 +476,9 @@ static BOOL __shouldShowRangeDebugOverlay = NO;
   }
   
   if (ASScrollDirectionContainsVerticalDirection(scrollDirection)) {
-    
+    if (self.bounds.size.height == 0) {
+      return;
+    }
     if (displayRect.size.height >= preloadRect.size.height) {
       displayRangeLargerThanPreload = YES;
     } else {
@@ -481,9 +486,9 @@ static BOOL __shouldShowRangeDebugOverlay = NO;
     }
     
     if (displayRangeLargerThanPreload) {
-      visibleRatio    = visibleRect.size.height / displayRect.size.height;
+      visibleRatio    = displayRect.size.height != 0 ? visibleRect.size.height / displayRect.size.height : 1;
       displayRatio    = 1.0;
-      preloadRatio    = preloadRect.size.height / displayRect.size.height;
+      preloadRatio    = displayRect.size.height != 0 ? preloadRect.size.height / displayRect.size.height : 1;
     } else {
       visibleRatio    = visibleRect.size.height / preloadRect.size.height;
       displayRatio    = displayRect.size.height / preloadRect.size.height;
@@ -491,7 +496,9 @@ static BOOL __shouldShowRangeDebugOverlay = NO;
     }
 
   } else {
-    
+    if (self.bounds.size.width == 0) {
+      return;
+    }
     if (displayRect.size.width >= preloadRect.size.width) {
       displayRangeLargerThanPreload = YES;
     } else {

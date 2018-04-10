@@ -1906,16 +1906,24 @@ static NSString * const kCellReuseIdentifier = @"_ASTableViewCell";
 - (void)didMoveToWindow
 {
   BOOL visible = (self.window != nil);
+  BOOL rangeControllerUpdated = NO;
+
   ASDisplayNode *node = self.tableNode;
   if (!visible && node.inHierarchy) {
+    if (![node supportsRangeManagedInterfaceState]) {
+      rangeControllerUpdated = YES;
+      // Exit CellNodes first before Collection to match UIKit behaviors (tear down bottom up).
+      // Although we have not yet cleared the interfaceState's Visible bit (this  happens in __exitHierarchy),
+      // the ASRangeController will get the correct value from -interfaceStateForRangeController:.
+      [_rangeController updateRanges];
+    }
     [node __exitHierarchy];
   }
 
   // Updating the visible node index paths only for not range managed nodes. Range managed nodes will get their
   // their update in the layout pass
-  if (![node supportsRangeManagedInterfaceState]) {
-    [_rangeController setNeedsUpdate];
-    [_rangeController updateIfNeeded];
+  if (![node supportsRangeManagedInterfaceState] && !rangeControllerUpdated) {
+    [_rangeController updateRanges];
   }
 
   // When we aren't visible, we will only fetch up to the visible area. Now that we are visible,
