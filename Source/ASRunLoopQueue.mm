@@ -26,6 +26,7 @@
 #import <cstdlib>
 #import <deque>
 #import <vector>
+#import <UIKit/UIKit.h>
 
 #define ASRunLoopQueueLoggingEnabled 0
 #define ASRunLoopQueueVerboseLoggingEnabled 0
@@ -552,7 +553,7 @@ static int const kASASCATransactionQueuePostOrder = 3000000;
       NSLog(@"!!! preCommit");
 //      [weakSelf processQueue];
       while (true) {
-        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        UIWindow *window = [[NSClassFromString(@"UIApplication") sharedApplication] keyWindow];
         if (!window.hidden) {
           NSLog(@"^^^^ windowLayoutIfNeeded");
           [window layoutIfNeeded];
