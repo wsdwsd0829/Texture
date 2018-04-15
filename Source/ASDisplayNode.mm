@@ -2959,7 +2959,13 @@ ASDISPLAYNODE_INLINE BOOL subtreeIsRasterized(ASDisplayNode *node) {
   // Entered or exited range managed state.
   if ((newState & ASHierarchyStateRangeManaged) != (oldState & ASHierarchyStateRangeManaged)) {
     if (newState & ASHierarchyStateRangeManaged) {
-      [self enterInterfaceState:self.supernode.pendingInterfaceState];
+      if (!((self.supernode.pendingInterfaceState & ASInterfaceStateVisible) && !self.isNodeLoaded)) {
+        [self enterInterfaceState:self.supernode.pendingInterfaceState];
+      } else {
+        [self onDidLoad:^(__kindof ASDisplayNode * _Nonnull node) {
+          [self enterInterfaceState:self.supernode.pendingInterfaceState];
+        }];
+      }
     } else {
       // The case of exiting a range-managed state should be fairly rare.  Adding or removing the node
       // to a view hierarchy will cause its interfaceState to be either fully set or unset (all fields),
@@ -3272,6 +3278,9 @@ ASDISPLAYNODE_INLINE BOOL subtreeIsRasterized(ASDisplayNode *node) {
   // subclass override
   ASDisplayNodeAssertMainThread();
   ASDisplayNodeAssertLockUnownedByCurrentThread(__instanceLock__);
+  if (!(self.hierarchyState & ASHierarchyStateRasterized)) {
+    ASDisplayNodeAssert(self.isNodeLoaded, @"Node should be loaded");
+  }
   [_interfaceStateDelegate didEnterVisibleState];
 #if AS_ENABLE_TIPS
   [ASTipsController.shared nodeDidAppear:self];

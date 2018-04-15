@@ -61,6 +61,7 @@
 
 - (void)testThatProgressBlockIsSetAndClearedCorrectlyOnChangeURL
 {
+  [node view];
   [node enterInterfaceState:ASInterfaceStateInHierarchy];
 
   // Set URL while visible, should set progress block

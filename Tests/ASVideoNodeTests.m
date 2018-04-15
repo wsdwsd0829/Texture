@@ -207,6 +207,7 @@
 - (void)doPlayerLayerNodeIsNotAddedIfVisibleButShouldNotBePlaying
 {
   [_videoNode pause];
+  [_videoNode view];
   [_videoNode setInterfaceState:ASInterfaceStateVisible | ASInterfaceStateDisplay];
   [_videoNode didLoad];
   
@@ -234,7 +235,7 @@
     return playerLayer;
   }];
   _videoNode.playerNode.layer.frame = CGRectZero;
-  
+  [_videoNode view];
   [_videoNode didEnterVisibleState];
 
   XCTAssertTrue(_videoNode.shouldBePlaying);
@@ -313,6 +314,7 @@
   _videoNode.shouldAutorepeat = NO;
 
   [_videoNode didLoad];
+  [_videoNode view];
   [_videoNode setInterfaceState:ASInterfaceStateVisible | ASInterfaceStateDisplay | ASInterfaceStatePreload];
   [_videoNode prepareToPlayAsset:assetMock withKeys:_requestedKeys];
   [_videoNode play];
@@ -334,6 +336,7 @@
   _videoNode.shouldAutorepeat = YES;
 
   [_videoNode didLoad];
+  [_videoNode view];
   [_videoNode setInterfaceState:ASInterfaceStateVisible | ASInterfaceStateDisplay | ASInterfaceStatePreload];
   [_videoNode prepareToPlayAsset:assetMock withKeys:_requestedKeys];
   [_videoNode play];
@@ -349,7 +352,7 @@
   [[[assetMock stub] andReturnValue:@YES] isPlayable];
   
   _videoNode.asset = assetMock;
-
+  [_videoNode view];
   [_videoNode setInterfaceState:ASInterfaceStateVisible | ASInterfaceStateDisplay | ASInterfaceStatePreload];
   [_videoNode prepareToPlayAsset:assetMock withKeys:_requestedKeys];
   ASCATransactionQueueWait(nil);
